@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    /*
+    * 如果一个函数，它是通过new这种方式来执行的，那么它就跟普通的函数不一样了，它就是构造函数，而且它的首字母大写
+    * 一般情况下，我们建议构造函数首字母大写，为了跟普通函数进行区分
+    *
+    * 构造函数我们一般在组件、插件、库、框架封装的时候，会用到构造函数，其余我们在写业务代码逻辑的时候，一般不常用
+    *
+    * 注意：如果构造函数没有参数的情况下，我们可以默认不写小括号
+    *
+    * 在构造函数当中，给this赋值的属性，都属于实例的私有属性
+    * */
+    new Number()
+    function fn(){
+
+    }
+    fn()
+    function Fn(){
+
+    }
+    new Fn// 如果没有参数可以不加括号
+
+    /*
+    * 普通函数的执行步骤
+    * 1. 开辟私有作用域
+    * 2. 形参赋值
+    * 3. 变量提升
+    * 4. 代码从上到下执行
+    * 5. 判断当前作用域是否销毁
+    *
+    * */
+
+    /*
+    * 构造函数的执行步骤
+    * 1. 开辟一个私有的作用域
+    * 2. 形参赋值
+    * 3. 变量提升
+    * 4. 浏览器创建一个对象，这个对象就是this【浏览器会开辟一个堆内存，将堆内存的指针指向了this】
+    * 5. 代码从上到下执行
+    * 6. 不写return，浏览器会自动将this返回【return this】，写了return ，如果return后面是基本数据类型，对实例没有影响，如果是引用数据类型，对实例有影响【引用数据类型是什么，return什么】；return的这个值就是我们的实例
+    *
+    * */
+    function Animal(name,todo){
+        var newName = '佩奇'
+        function todoList() {
+            console.log(todo)
+        }
+        this.name = name;
+        this.todoList = todo;
+        // return 'haha'
+        // return {name:'haha'}
+        // 这个this就是当前构造函数的一个实例，同时它又是一个对象
+        // return this
+    }
+    var cat = new Animal('tom','喵喵')
+    console.log(cat);
+
+    // 所有的实例都是对象数据类型
+    // 所有的类都是函数数据类型
+    //instanceof // 判断当前实例是否属于这个类
+    /*
+    * instanceof 用来检测引用数据类型，尤其是对象数据类型中的细分。但是它不能检测字面量创建的基本数据类型
+    *
+    * */
+    // typeof // 检测基本数据类型
+    // typeof null // Object
+    // typeof Array
+    console.log(cat instanceof Animal);
+    console.log(cat instanceof Object);//true
+    console.log(cat instanceof Function);
+    var num = new Number(1)
+    console.log(num instanceof Number);
+    function fn(){}
+    console.log(fn instanceof Function);//
+    console.log([] instanceof Array);//
+
+    // 实例cat是一个对象{name: "tom", todoList: "喵喵"}
+
+    //检测一个对象中是否有某一个属性
+    // in 通过这种方式来检测是否这个对象的属性，检测的私有属性+公有属性
+    console.log('name' in cat); //true  私有属性
+    console.log('constructor' in cat); //true  公有属性
+    console.log('toString' in cat); //true  公有属性
+    // console.log(Animal.name == cat.name); //
+
+    //hasOwnProperty
+    // 只能检测当前属性是否是这个对象的私有属性
+    console.log(cat.hasOwnProperty('name')); //true
+    console.log(cat.hasOwnProperty('constructor'));// false
+    console.log(cat.hasOwnProperty('makeSound'));// false
+    console.log(cat.hasOwnProperty('toString')); // false
+    // 封装一个公有属性的方法，实现返回值true和false
+    cat.__proto__.hasPubProperty=function () {
+
+    }
+    cat.hasPubProperty('toString')// true
+    cat.hasPubProperty('name')// false
+
+</script>
